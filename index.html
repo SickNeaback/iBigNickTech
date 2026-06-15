@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iBigNickTech – Apple News, Rumors & Reviews</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Mona+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --apple-red:    #FF2600;
+    --apple-orange: #FF9300;
+    --apple-yellow: #FFCD00;
+    --apple-green:  #65B100;
+    --apple-blue:   #0066CC;
+    --apple-purple: #800080;
+
+    --white:   #FFFFFF;
+    --offwhite:#F5F5F7;
+    --silver:  #E8E8ED;
+    --mid:     #AEAEB2;
+    --dark:    #1D1D1F;
+    --body:    #3A3A3C;
+    --link:    #0066CC;
+
+    --nav-h: 44px;
+    --radius: 10px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--body);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { display: block; max-width: 100%; }
+
+  /* ── APPLE LOGO SVG ───────────────────────────────── */
+  .apple-logo {
+    width: 26px; height: 32px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ── GLASSY NAV ───────────────────────────────────── */
+  #site-header {
+    position: sticky; top: 0; z-index: 999;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(235,235,235,0.94) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .nav-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: var(--nav-h);
+    padding: 0 16px;
+    gap: 0;
+  }
+
+  .nav-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 15px;
+    color: var(--dark);
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+  .nav-brand span { font-weight: 300; font-size: 11px; color: var(--mid); display: block; letter-spacing: 0.3px; line-height: 1; }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 0;
+    list-style: none;
+    margin-left: 28px;
+    flex: 1;
+  }
+  .nav-links li a {
+    display: block;
+    padding: 0 12px;
+    height: var(--nav-h);
+    line-height: var(--nav-h);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--dark);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    letter-spacing: 0.2px;
+  }
+  .nav-links li a:hover,
+  .nav-links li a.active { color: var(--link); border-bottom-color: var(--link); }
+
+  .nav-search {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .nav-search input {
+    width: 160px;
+    height: 24px;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 12px;
+    background: rgba(0,0,0,0.04);
+    padding: 0 10px 0 28px;
+    font-size: 12px;
+    outline: none;
+    transition: width .2s, border-color .2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 8px center;
+  }
+  .nav-search input:focus { border-color: var(--link); width: 200px; background-color: white; }
+
+  /* ── TICKER STRIP ─────────────────────────────────── */
+  .ticker-strip {
+    background: linear-gradient(90deg, #0055b3, #0077ed);
+    color: white; font-size: 12px; font-weight: 500;
+    padding: 6px 0; overflow: hidden;
+  }
+  .ticker-inner {
+    max-width: 980px; margin: 0 auto; padding: 0 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ticker-label {
+    background: rgba(255,255,255,0.25); border-radius: 4px;
+    padding: 1px 7px; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase; flex-shrink: 0;
+  }
+  .ticker-text { color: rgba(255,255,255,0.92); }
+  .ticker-text a { color: white; text-decoration: underline; }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(180deg, #f0f0f5 0%, #ffffff 100%);
+    border-bottom: 1px solid var(--silver);
+    padding: 60px 16px 48px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 600;
+    color: var(--link); letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700; line-height: 1.1;
+    color: var(--dark); letter-spacing: -1px;
+    max-width: 700px; margin: 0 auto 16px;
+  }
+  .hero h1 em { font-style: italic; color: var(--link); }
+  .hero-sub {
+    font-size: 18px; font-weight: 300; color: #555;
+    max-width: 520px; margin: 0 auto 28px;
+  }
+  .hero-chips {
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  }
+  .chip {
+    display: inline-block; border: 1px solid rgba(0,102,204,0.3);
+    border-radius: 20px; padding: 4px 14px; font-size: 12px;
+    font-weight: 500; color: var(--link);
+    transition: background .15s, color .15s;
+  }
+  .chip:hover { background: var(--link); color: white; text-decoration: none; }
+
+  /* ── LAYOUT ───────────────────────────────────────── */
+  .container { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+  /* ── FEATURED ROW ─────────────────────────────────── */
+  .featured-row {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1px;
+    background: var(--silver);
+    border-bottom: 1px solid var(--silver);
+    margin: 0 -16px;
+  }
+  @media (max-width: 720px) {
+    .featured-row { grid-template-columns: 1fr; }
+  }
+
+  .feat-main {
+    background: var(--white);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .feat-main::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--apple-red), var(--apple-orange), var(--apple-yellow), var(--apple-green), var(--apple-blue), var(--apple-purple));
+  }
+
+  .feat-main .cat-tag {
+    display: inline-block; background: var(--apple-red); color: white;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 2px 8px; border-radius: 3px; margin-bottom: 12px;
+  }
+  .feat-main h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(22px, 3vw, 32px); font-weight: 700;
+    color: var(--dark); line-height: 1.2; margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .feat-main h2 a { color: inherit; }
+  .feat-main h2 a:hover { color: var(--link); text-decoration: none; }
+  .feat-meta { font-size: 12px; color: var(--mid); margin-bottom: 12px; }
+  .feat-meta strong { color: var(--body); }
+  .feat-excerpt { font-size: 15px; color: var(--body); line-height: 1.65; margin-bottom: 18px; }
+  .read-more {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 13px; font-weight: 600; color: var(--link);
+  }
+  .read-more svg { transition: transform .15s; }
+  .read-more:hover svg { transform: translateX(3px); }
+  .read-more:hover { text-decoration: none; }
+
+  /* product image placeholder */
+  .feat-img {
+    width: 100%; aspect-ratio: 16/9;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e8e8f0 0%, #d0d0da 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .feat-img svg { opacity: 0.18; }
+
+  /* SIDEBAR of featured */
+  .feat-side {
+    background: var(--white);
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .feat-side-title {
+    font-size: 10px; font-weight: 700; color: var(--mid);
+    letter-spacing: 1.2px; text-transform: uppercase;
+    padding-bottom: 10px; margin-bottom: 4px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .side-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--silver);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .side-item:last-child { border-bottom: none; }
+  .side-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 6px;
+  }
+  .side-item h4 { font-size: 13px; font-weight: 600; color: var(--dark); line-height: 1.3; margin-bottom: 3px; }
+  .side-item h4 a { color: inherit; }
+  .side-item h4 a:hover { color: var(--link); text-decoration: none; }
+  .side-item p { font-size: 11px; color: var(--mid); }
+
+  /* ── SECTION LABEL ────────────────────────────────── */
+  .section-label {
+    display: flex; align-items: center; gap: 12px;
+    padding: 24px 0 12px;
+  }
+  .section-label h3 {
+    font-size: 11px; font-weight: 700; color: var(--dark);
+    letter-spacing: 1.5px; text-transform: uppercase; flex-shrink: 0;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--silver);
+  }
+  .section-label a { font-size: 11px; color: var(--link); flex-shrink: 0; }
+
+  /* ── CARD GRID ────────────────────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding-bottom: 32px;
+  }
+  @media (max-width: 720px) { .card-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .card-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--silver);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10); transform: translateY(-2px); }
+
+  .card-img {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #e2e2ea 0%, #c8c8d4 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .card-img svg { opacity: 0.15; }
+
+  .card-body { padding: 16px; }
+  .card .cat-tag {
+    display: inline-block; font-size: 9px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 3px; margin-bottom: 8px; color: white;
+  }
+  .card h4 { font-size: 15px; font-weight: 600; color: var(--dark); line-height: 1.3; margin-bottom: 7px; }
+  .card h4 a { color: inherit; }
+  .card h4 a:hover { color: var(--link); text-decoration: none; }
+  .card p { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 10px; }
+  .card-meta { font-size: 11px; color: var(--mid); display: flex; align-items: center; gap: 8px; }
+  .card-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--mid); }
+
+  /* ── LIST ARTICLES ────────────────────────────────── */
+  .article-list { display: flex; flex-direction: column; gap: 0; }
+  .article-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 16px 0; border-bottom: 1px solid var(--silver);
+  }
+  .article-item:last-child { border-bottom: none; }
+  .article-thumb {
+    width: 88px; height: 62px; border-radius: 7px; flex-shrink: 0;
+    background: linear-gradient(135deg, #e2e2ea 0%, #c8c8d4 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .article-thumb svg { opacity: 0.18; }
+  .article-body {}
+  .article-body .cat-tag {
+    display: inline-block; font-size: 9px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 3px; margin-bottom: 5px; color: white;
+  }
+  .article-body h4 { font-size: 14px; font-weight: 600; color: var(--dark); line-height: 1.3; margin-bottom: 4px; }
+  .article-body h4 a { color: inherit; }
+  .article-body h4 a:hover { color: var(--link); text-decoration: none; }
+  .article-body p { font-size: 12px; color: #777; line-height: 1.4; }
+  .article-meta { font-size: 11px; color: var(--mid); margin-top: 5px; }
+
+  /* ── CATEGORIES ───────────────────────────────────── */
+  .cat-blue   { background: #0066CC; }
+  .cat-red    { background: #D00000; }
+  .cat-green  { background: #2D7A1F; }
+  .cat-purple { background: #6B21A8; }
+  .cat-orange { background: #C85000; }
+  .cat-teal   { background: #0B7A75; }
+
+  /* ── TWO COL LAYOUT ───────────────────────────────── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 280px; gap: 32px;
+    padding-bottom: 40px;
+  }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── SIDEBAR ──────────────────────────────────────── */
+  .sidebar {}
+  .sidebar-widget {
+    background: var(--offwhite);
+    border: 1px solid var(--silver);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .widget-head {
+    background: linear-gradient(180deg, #f0f0f5 0%, #e8e8ed 100%);
+    border-bottom: 1px solid var(--silver);
+    padding: 10px 14px;
+    font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+    color: var(--dark); text-transform: uppercase;
+  }
+  .widget-body { padding: 12px 14px; }
+  .topic-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .topic-chip {
+    display: inline-block; background: white;
+    border: 1px solid var(--silver); border-radius: 16px;
+    padding: 4px 12px; font-size: 12px; font-weight: 500; color: var(--body);
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .topic-chip:hover { background: var(--dark); color: white; border-color: var(--dark); text-decoration: none; }
+
+  .sidebar-news-item {
+    padding: 10px 0; border-bottom: 1px solid var(--silver);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .sidebar-news-item:last-child { border-bottom: none; }
+  .sn-num {
+    width: 20px; height: 20px; border-radius: 4px;
+    background: var(--dark); color: white; font-size: 9px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .sidebar-news-item h5 { font-size: 12px; font-weight: 600; color: var(--dark); line-height: 1.3; }
+  .sidebar-news-item h5 a { color: inherit; }
+  .sidebar-news-item h5 a:hover { color: var(--link); text-decoration: none; }
+  .sidebar-news-item span { font-size: 10px; color: var(--mid); }
+
+  .rumor-item {
+    padding: 10px 0; border-bottom: 1px solid var(--silver);
+  }
+  .rumor-item:last-child { border-bottom: none; }
+  .rumor-bar {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;
+  }
+  .rumor-item h5 { font-size: 12px; font-weight: 600; color: var(--dark); margin-bottom: 3px; }
+  .rumor-conf {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 2px 6px; border-radius: 4px; color: white;
+  }
+  .conf-high { background: #2D7A1F; }
+  .conf-med  { background: #C85000; }
+  .conf-low  { background: #999; }
+  .rumor-src { font-size: 10px; color: var(--mid); }
+  .rumor-track {
+    height: 3px; border-radius: 2px; background: var(--silver); overflow: hidden; margin-top: 4px;
+  }
+  .rumor-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, #2D7A1F, #65B100); }
+
+  /* ── REVIEW STRIP ─────────────────────────────────── */
+  .review-card {
+    background: var(--white); border: 1px solid var(--silver);
+    border-radius: var(--radius); overflow: hidden;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .review-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10); transform: translateY(-2px); }
+  .review-card-body { padding: 16px; }
+  .review-score {
+    display: inline-flex; align-items: baseline; gap: 2px;
+    margin-bottom: 8px;
+  }
+  .score-num { font-size: 28px; font-weight: 700; color: var(--dark); line-height: 1; }
+  .score-denom { font-size: 14px; color: var(--mid); }
+  .score-label { font-size: 10px; font-weight: 700; color: #2D7A1F; letter-spacing: 0.5px; margin-left: 4px; text-transform: uppercase; }
+  .review-card h4 { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
+  .review-card h4 a { color: inherit; }
+  .review-card h4 a:hover { color: var(--link); text-decoration: none; }
+  .review-card p { font-size: 12px; color: #666; line-height: 1.4; }
+  .stars { color: #f5a623; font-size: 13px; margin-bottom: 6px; }
+
+  /* ── PRODUCT SPOTLIGHT ────────────────────────────── */
+  .spotlight {
+    background: linear-gradient(180deg, #1d1d1f 0%, #2d2d2f 100%);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    align-items: center;
+    margin: 24px 0;
+    position: relative; overflow: hidden;
+  }
+  @media (max-width: 600px) { .spotlight { grid-template-columns: 1fr; } }
+  .spotlight::before {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,119,237,0.3) 0%, transparent 70%);
+  }
+  .spotlight-text {}
+  .spotlight-eyebrow { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 10px; }
+  .spotlight h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.2; }
+  .spotlight p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.6; margin-bottom: 20px; }
+  .spotlight-btn {
+    display: inline-block; background: white; color: var(--dark);
+    font-size: 13px; font-weight: 600; padding: 9px 20px;
+    border-radius: 20px; transition: background .15s, transform .1s;
+  }
+  .spotlight-btn:hover { background: #f0f0f5; text-decoration: none; transform: scale(1.02); }
+  .spotlight-device {
+    display: flex; align-items: center; justify-content: center;
+    height: 180px;
+    position: relative; z-index: 1;
+  }
+  /* Drawn iPhone silhouette */
+  .phone-silhouette {
+    width: 80px; height: 160px;
+    background: linear-gradient(170deg, #3a3a3a 0%, #111 100%);
+    border-radius: 18px;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .phone-silhouette::before {
+    content: '';
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15);
+  }
+  .phone-screen {
+    position: absolute; top: 14px; left: 4px; right: 4px; bottom: 20px;
+    border-radius: 12px;
+    background: linear-gradient(160deg, #0066CC 0%, #003380 100%);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .phone-screen::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  }
+  .phone-home {
+    position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.2);
+  }
+
+  /* ── FOOTER ───────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--silver);
+    background: linear-gradient(180deg, var(--offwhite) 0%, var(--silver) 100%);
+  }
+  .footer-rainbow {
+    height: 3px;
+    background: linear-gradient(90deg, var(--apple-red), var(--apple-orange), var(--apple-yellow), var(--apple-green), var(--apple-blue), var(--apple-purple));
+  }
+  .footer-inner {
+    max-width: 980px; margin: 0 auto; padding: 32px 16px 20px;
+  }
+  .footer-cols {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 24px; margin-bottom: 28px;
+  }
+  @media (max-width: 720px) { .footer-cols { grid-template-columns: 1fr 1fr; } }
+  .footer-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .footer-brand span { font-size: 16px; font-weight: 700; color: var(--dark); }
+  .footer-tagline { font-size: 12px; color: #777; line-height: 1.5; max-width: 200px; }
+  .footer-col h5 {
+    font-size: 11px; font-weight: 700; color: var(--dark);
+    letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 6px; }
+  .footer-col a { font-size: 12px; color: #555; }
+  .footer-col a:hover { color: var(--link); }
+  .footer-bottom {
+    border-top: 1px solid var(--silver); padding-top: 16px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-bottom p { font-size: 11px; color: var(--mid); }
+  .footer-bottom-links { display: flex; gap: 16px; }
+  .footer-bottom-links a { font-size: 11px; color: var(--mid); }
+  .footer-bottom-links a:hover { color: var(--link); }
+
+  /* ── REFLECTION EFFECT ────────────────────────────── */
+  .reflect {
+    position: relative;
+  }
+  .reflect::after {
+    content: '';
+    display: block;
+    height: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%);
+    transform: scaleY(-1);
+    opacity: 0.4;
+    margin-top: -2px;
+  }
+
+  /* ── DIVIDER ──────────────────────────────────────── */
+  .divider { height: 1px; background: var(--silver); margin: 0; }
+
+  /* ── LOADING SHIMMER ──────────────────────────────── */
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+
+  /* ── PRODUCT ICONS (CSS-drawn) ────────────────────── */
+  .mac-icon, .iphone-icon, .ipad-icon, .watch-icon, .airpods-icon {
+    display: flex; align-items: center; justify-content: center;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ── HEADER / NAV ─────────────────────────────────── -->
+<header id="site-header">
+  <nav class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <!-- Clean Apple Logo SVG -->
+      <svg class="apple-logo" viewBox="0 0 814 1000" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#1D1D1F" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.3-155.5-127.2C46.7 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 70.6 0 127.5 46.4 171.1 46.4 42.8 0 109.4-49 192.5-49 31.2 0 113.4 2.6 168.5 98.3zM554 107.3c23.4-27.6 40.2-66.1 40.2-104.6 0-5.2-.6-10.5-1.3-15.7-38.1 1.4-82.9 25.4-109.9 57-21.3 24.7-41.6 63.2-41.6 102.3 0 5.8.9 11.6 1.3 13.5 2.3.4 6.1.9 9.9.9 34.4 0 75.8-22.7 101.4-53.4z"/>
+      </svg>
+      <div>
+        iBigNickTech
+        <span>Apple News, Rumors &amp; Reviews</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="tips.html">Tips</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-search">
+      <input type="search" placeholder="Search…" aria-label="Search">
+    </div>
+  </nav>
+</header>
+
+<!-- ── BREAKING TICKER ─────────────────────────────── -->
+<div class="ticker-strip">
+  <div class="ticker-inner">
+    <span class="ticker-label">Breaking</span>
+    <span class="ticker-text">Apple reportedly set to announce iPhone 17 event for September 9th — <a href="iphone-17-event.html">Read more →</a></span>
+  </div>
+</div>
+
+<!-- ── HERO ───────────────────────────────────────────── -->
+<div class="hero">
+  <p class="hero-eyebrow">Your #1 Apple Source</p>
+  <h1>iBigNickTech — <em>All Things Apple</em></h1>
+  <p class="hero-sub">News, leaks, reviews and deep-dives on every Apple product. No fluff, just the good stuff.</p>
+  <div class="hero-chips">
+    <a href="#" class="chip">iPhone 17 Rumors</a>
+    <a href="#" class="chip">iOS 19 Beta</a>
+    <a href="#" class="chip">Apple Intelligence</a>
+    <a href="#" class="chip">Mac Pro M4</a>
+    <a href="#" class="chip">WWDC 2026</a>
+  </div>
+</div>
+
+<!-- ── FEATURED ROW ────────────────────────────────────── -->
+<div class="container">
+  <div class="featured-row">
+
+    <div class="feat-main">
+      <div class="feat-img">
+        <!-- CSS-drawn MacBook silhouette -->
+        <svg width="220" height="140" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="180" height="108" rx="8" fill="#555" stroke="#444" stroke-width="1"/>
+          <rect x="26" y="16" width="168" height="96" rx="4" fill="#222"/>
+          <rect x="0" y="120" width="220" height="8" rx="4" fill="#555"/>
+          <rect x="90" y="120" width="40" height="4" rx="2" fill="#444"/>
+          <circle cx="110" cy="64" r="4" fill="#333"/>
+        </svg>
+      </div>
+      <span class="cat-tag cat-blue" style="background:#0066CC">Review</span>
+      <h2><a href="macbook-pro-m4-max-review.html">MacBook Pro M4 Max Review: The Laptop Apple Always Promised</a></h2>
+      <p class="feat-meta">By <strong>Nicholas Seaback</strong> from iBigNickTech · June 14, 2026 · 12 min read</p>
+      <p class="feat-excerpt">After two weeks with Apple's most powerful MacBook Pro ever, one thing is abundantly clear — the M4 Max chip doesn't just push the envelope, it redesigns the envelope entirely. Final Cut renders that used to take 20 minutes now finish in under three. Battery life on a machine this powerful feels like a miracle.</p>
+      <a href="#" class="read-more">
+        Read the full review
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="feat-side">
+      <div class="feat-side-title">Top Stories</div>
+
+      <div class="side-item">
+        <div class="side-dot" style="background:#D00000"></div>
+        <div>
+          <h4><a href="ios-19-beta-features.html">Apple Intelligence gets major upgrade with iOS 19: everything new</a></h4>
+          <p>By Nicholas Seaback from iBigNickTech · 2 hours ago · 6 min read</p>
+        </div>
+      </div>
+
+      <div class="side-item">
+        <div class="side-dot" style="background:#0066CC"></div>
+        <div>
+          <h4><a href="iphone-fold.html">iPhone 17 Fold: Apple's first foldable iPhone coming this September</a></h4>
+          <p>By Nicholas Seaback from iBigNickTech · 5 hours ago · 8 min read</p>
+        </div>
+      </div>
+
+      <div class="side-item">
+        <div class="side-dot" style="background:#2D7A1F"></div>
+        <div>
+          <h4><a href="wwdc-2026-recap.html">WWDC 2026 recap: every announcement from Monday's keynote</a></h4>
+          <p>By Nicholas Seaback from iBigNickTech · Yesterday · 15 min read</p>
+        </div>
+      </div>
+
+      <div class="side-item">
+        <div class="side-dot" style="background:#6B21A8"></div>
+        <div>
+          <h4><a href="apple-watch-series-11-blood-glucose.html">Apple Watch Series 11 rumored to feature blood glucose sensing</a></h4>
+          <p>By Nicholas Seaback from iBigNickTech · 2 days ago · 6 min read</p>
+        </div>
+      </div>
+
+      <div class="side-item">
+        <div class="side-dot" style="background:#C85000"></div>
+        <div>
+          <h4><a href="macbook-pro-m4-max-review.html">The new Mac mini M4 Pro is shockingly fast for $899</a></h4>
+          <p>By Nicholas Seaback from iBigNickTech · 3 days ago · 8 min read</p>
+        </div>
+      </div>
+
+      <div class="side-item">
+        <div class="side-dot" style="background:#0B7A75"></div>
+        <div>
+          <h4><a href="wwdc-2026-recap.html">Apple Vision Pro 2 detailed: thinner, lighter, with eye tracking overhaul</a></h4>
+          <p>By Nicholas Seaback from iBigNickTech · 4 days ago · 5 min read</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── MAIN CONTENT ────────────────────────────────────── -->
+<div class="container">
+  <div class="two-col">
+
+    <div class="main-col">
+
+      <!-- Latest News Grid -->
+      <div id="news" class="section-label"><h3>Latest News</h3><a href="#">See all →</a></div>
+
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="10" y="8" width="40" height="30" rx="4"/>
+              <rect x="18" y="40" width="24" height="6" rx="2"/>
+              <rect x="14" y="46" width="32" height="3" rx="1"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-blue">News</span>
+            <h4><a href="wwdc-2026-recap.html">macOS 16 Sequoia brings redesigned Notification Center and Live Activities</a></h4>
+            <p>Apple's next desktop OS gets a major visual refresh plus powerful new Focus Mode integrations.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 14</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="18" y="6" width="24" height="46" rx="6"/>
+              <rect x="22" y="10" width="16" height="30" rx="2"/>
+              <circle cx="30" cy="46" r="3"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-red">Rumor</span>
+            <h4><a href="iphone-fold.html">iPhone 17 Pro: titanium frame, under-display Face ID, and a new camera bar</a></h4>
+            <p>Sources close to Apple's supply chain detail a camera system redesign unlike anything before.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 13</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="8" y="14" width="44" height="32" rx="4"/>
+              <rect x="16" y="48" width="28" height="5" rx="2"/>
+              <rect x="22" y="48" width="16" height="2" rx="1" fill="#888" stroke="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-purple">Review</span>
+            <h4><a href="macbook-pro-m4-max-review.html">iPad Pro M4 11-inch review: finally, the iPad you can live in</a></h4>
+            <p>Six months later, does Apple's thinnest device ever still hold up? We put it through its paces.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 12</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Spotlight dark card -->
+      <div class="spotlight">
+        <div class="spotlight-text">
+          <p class="spotlight-eyebrow">In-Depth</p>
+          <h3>Inside Apple Silicon: how M4 changed everything</h3>
+          <p>A deep dive into how Apple's chip team built the most power-efficient performance core ever — and what it means for the Mac's future.</p>
+          <a href="#" class="spotlight-btn">Read the feature →</a>
+        </div>
+        <div class="spotlight-device">
+          <div class="phone-silhouette">
+            <div class="phone-screen">
+              <!-- tiny waveform lines for visual interest -->
+              <svg width="50" height="30" viewBox="0 0 50 30" fill="rgba(255,255,255,0.3)">
+                <rect x="4"  y="12" width="3" height="6" rx="1"/>
+                <rect x="10" y="8"  width="3" height="14" rx="1"/>
+                <rect x="16" y="4"  width="3" height="22" rx="1"/>
+                <rect x="22" y="10" width="3" height="10" rx="1"/>
+                <rect x="28" y="6"  width="3" height="18" rx="1"/>
+                <rect x="34" y="10" width="3" height="10" rx="1"/>
+                <rect x="40" y="14" width="3" height="5" rx="1"/>
+              </svg>
+            </div>
+            <div class="phone-home"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- More News (list style) -->
+      <div class="section-label" style="margin-top:32px"><h3>More News</h3><a href="#">See all →</a></div>
+
+      <div class="article-list">
+        <div class="article-item">
+          <div class="article-thumb">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#888" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="18" cy="14" r="7"/>
+              <path d="M8,30 C8,23 28,23 28,30"/>
+            </svg>
+          </div>
+          <div class="article-body">
+            <span class="cat-tag cat-teal" style="background:#0B7A75">How-To</span>
+            <h4><a href="ios-19-beta-features.html">How to set up Apple Intelligence Writing Tools on your iPhone or Mac</a></h4>
+            <p>Step-by-step guide to getting the most out of Apple's AI writing assistant in iOS 18.4 and above.</p>
+            <div class="article-meta">By Nicholas Seaback from iBigNickTech · June 13 · 5 min read</div>
+          </div>
+        </div>
+
+        <div class="article-item">
+          <div class="article-thumb">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#888" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="10" width="24" height="18" rx="3"/>
+              <path d="M12,28 L12,32 M24,28 L24,32 M8,32 L28,32"/>
+            </svg>
+          </div>
+          <div class="article-body">
+            <span class="cat-tag cat-orange" style="background:#C85000">Opinion</span>
+            <h4><a href="#">Apple TV+ is quietly becoming the best streaming service nobody's talking about</a></h4>
+            <p>Between Severance, Shrinking, and a slate of upcoming originals, the service has quietly earned its place.</p>
+            <div class="article-meta">By Nicholas Seaback from iBigNickTech · June 12 · 7 min read</div>
+          </div>
+        </div>
+
+        <div class="article-item">
+          <div class="article-thumb">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#888" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="20" height="20" rx="4"/>
+              <line x1="14" y1="18" x2="22" y2="18"/>
+              <line x1="18" y1="14" x2="18" y2="22"/>
+            </svg>
+          </div>
+          <div class="article-body">
+            <span class="cat-tag cat-green" style="background:#2D7A1F">App</span>
+            <h4><a href="macbook-pro-m4-max-review.html">Apple updates Final Cut Pro with AI scene detection and automatic color grading</a></h4>
+            <p>The new 11.0 update turns Final Cut Pro into a genuinely smart video editor for the M4 era.</p>
+            <div class="article-meta">By Nicholas Seaback from iBigNickTech · June 11 · 4 min read</div>
+          </div>
+        </div>
+
+        <div class="article-item">
+          <div class="article-thumb">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#888" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="18" cy="18" r="12"/>
+              <path d="M18,10 L18,18 L24,18"/>
+            </svg>
+          </div>
+          <div class="article-body">
+            <span class="cat-tag cat-blue" style="background:#0066CC">News</span>
+            <h4><a href="#">AirPods 4 teardown reveals completely redesigned acoustic chamber and new H3 chip</a></h4>
+            <p>iFixit gets their hands on the new AirPods and uncovers major internal changes that explain the audio leap.</p>
+            <div class="article-meta">By Nicholas Seaback from iBigNickTech · June 10 · 6 min read</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone Section -->
+      <div id="iphone" class="section-label" style="margin-top:32px"><h3>iPhone Coverage</h3><a href="#">See all iPhone →</a></div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="18" y="6" width="24" height="46" rx="6"/>
+              <rect x="22" y="10" width="16" height="30" rx="2"/>
+              <circle cx="30" cy="46" r="3"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-blue">News</span>
+            <h4><a href="iphone-fold.html">iPhone 17 series: everything we know so far</a></h4>
+            <p>Comprehensive roundup of all leaks, rumors, and confirmed details about Apple's next flagship lineup.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 14</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="18" y="6" width="24" height="46" rx="6"/>
+              <rect x="22" y="10" width="16" height="30" rx="2"/>
+              <circle cx="30" cy="46" r="3"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-red">Rumor</span>
+            <h4><a href="iphone-fold.html">iPhone 17 Air leaked renders show ultra-thin design</a></h4>
+            <p>New images from case makers suggest Apple's thinnest iPhone ever is just months away.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 13</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="18" y="6" width="24" height="46" rx="6"/>
+              <rect x="22" y="10" width="16" height="30" rx="2"/>
+              <circle cx="30" cy="46" r="3"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-teal">How-To</span>
+            <h4><a href="ios-19-beta-features.html">How to transfer data from old iPhone to new iPhone</a></h4>
+            <p>The complete guide to moving all your photos, apps, and data seamlessly.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 12</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mac Section -->
+      <div id="mac" class="section-label" style="margin-top:32px"><h3>Mac Coverage</h3><a href="#">See all Mac →</a></div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="10" y="8" width="40" height="30" rx="4"/>
+              <rect x="18" y="40" width="24" height="6" rx="2"/>
+              <rect x="14" y="46" width="32" height="3" rx="1"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-purple">Review</span>
+            <h4><a href="macbook-pro-m4-max-review.html">MacBook Air M3: still the best laptop for most people</a></h4>
+            <p>One year later, Apple's most popular MacBook remains unbeatable value.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 11</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="10" y="8" width="40" height="30" rx="4"/>
+              <rect x="18" y="40" width="24" height="6" rx="2"/>
+              <rect x="14" y="46" width="32" height="3" rx="1"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-blue">News</span>
+            <h4><a href="macbook-pro-m4-max-review.html">Mac mini M4 Pro: Apple's most powerful compact Mac ever</a></h4>
+            <p>The tiny desktop gets a massive performance boost with the new M4 Pro chip.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 10</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="10" y="8" width="40" height="30" rx="4"/>
+              <rect x="18" y="40" width="24" height="6" rx="2"/>
+              <rect x="14" y="46" width="32" height="3" rx="1"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-green">App</span>
+            <h4><a href="macbook-pro-m4-max-review.html">Final Cut Pro 11.0: AI features that actually work</a></h4>
+            <p>Apple's video editor gets machine learning-powered scene detection and more.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 9</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPad Section -->
+      <div id="ipad" class="section-label" style="margin-top:32px"><h3>iPad Coverage</h3><a href="#">See all iPad →</a></div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="8" y="14" width="44" height="32" rx="4"/>
+              <rect x="16" y="48" width="28" height="5" rx="2"/>
+              <rect x="22" y="48" width="16" height="2" rx="1" fill="#888" stroke="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-purple">Review</span>
+            <h4><a href="macbook-pro-m4-max-review.html">iPad Pro M4 13-inch: desktop-class power in a tablet</a></h4>
+            <p>The larger iPad Pro proves it can replace a laptop for many professionals.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 8</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="8" y="14" width="44" height="32" rx="4"/>
+              <rect x="16" y="48" width="28" height="5" rx="2"/>
+              <rect x="22" y="48" width="16" height="2" rx="1" fill="#888" stroke="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-red">Rumor</span>
+            <h4><a href="wwdc-2026-recap.html">iPad Air M3 coming in 2027 with OLED display</a></h4>
+            <p>Apple's mid-range tablet lineup is getting a major display upgrade next year.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 7</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="8" y="14" width="44" height="32" rx="4"/>
+              <rect x="16" y="48" width="28" height="5" rx="2"/>
+              <rect x="22" y="48" width="16" height="2" rx="1" fill="#888" stroke="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-teal">How-To</span>
+            <h4><a href="ios-19-beta-features.html">Stage Manager on iPad: complete guide</a></h4>
+            <p>Master Apple's window management system and boost your iPad productivity.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 6</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Watch Section -->
+      <div id="watch" class="section-label" style="margin-top:32px"><h3>Apple Watch Coverage</h3><a href="#">See all Watch →</a></div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="20" y="8" width="20" height="24" rx="5"/>
+              <rect x="16" y="14" width="28" height="12" rx="3"/>
+              <rect x="26" y="32" width="8" height="12" rx="2"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-red">Rumor</span>
+            <h4><a href="apple-watch-series-11-blood-glucose.html">Apple Watch Series 11: blood glucose sensing confirmed</a></h4>
+            <p>Apple's long-awaited health feature is finally coming to the next Watch.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 5</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="20" y="8" width="20" height="24" rx="5"/>
+              <rect x="16" y="14" width="28" height="12" rx="3"/>
+              <rect x="26" y="32" width="8" height="12" rx="2"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-blue">News</span>
+            <h4><a href="wwdc-2026-recap.html">watchOS 12: new features announced at WWDC</a></h4>
+            <p>Apple's next watchOS update brings smarter notifications and improved health tracking.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 4</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="20" y="8" width="20" height="24" rx="5"/>
+              <rect x="16" y="14" width="28" height="12" rx="3"/>
+              <rect x="26" y="32" width="8" height="12" rx="2"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-teal">How-To</span>
+            <h4><a href="apple-watch-series-11-blood-glucose.html">Apple Watch Ultra 2: adventure guide</a></h4>
+            <p>Get the most out of your rugged Apple Watch with these advanced tips.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 3</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How-To Section -->
+      <div id="howto" class="section-label" style="margin-top:32px"><h3>How-To Guides</h3><a href="#">See all guides →</a></div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <circle cx="18" cy="14" r="7"/>
+              <path d="M8,30 C8,23 28,23 28,30"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-teal">How-To</span>
+            <h4><a href="ios-19-beta-features.html">Set up Apple Intelligence on iPhone</a></h4>
+            <p>Enable and configure Apple's AI features on your device.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 2</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="10" y="8" width="40" height="30" rx="4"/>
+              <rect x="18" y="40" width="24" height="6" rx="2"/>
+              <rect x="14" y="46" width="32" height="3" rx="1"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-teal">How-To</span>
+            <h4><a href="ios-19-beta-features.html">Clean your Mac the right way</a></h4>
+            <p>Safely remove junk files and optimize your Mac's performance.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>June 1</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="2">
+              <rect x="18" y="6" width="24" height="46" rx="6"/>
+              <rect x="22" y="10" width="16" height="30" rx="2"/>
+              <circle cx="30" cy="46" r="3"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat-tag cat-teal">How-To</span>
+            <h4><a href="ios-19-beta-features.html">iPhone battery health: complete guide</a></h4>
+            <p>Understand battery health and maximize your iPhone's lifespan.</p>
+            <div class="card-meta"><span>Nicholas Seaback</span><span class="dot"></span><span>May 31</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews Section -->
+      <div id="reviews" class="section-label" style="margin-top:32px"><h3>Recent Reviews</h3><a href="#">See all reviews →</a></div>
+
+      <div class="card-grid">
+        <div class="review-card">
+          <div class="card-img" style="background:linear-gradient(135deg,#e8e8f0,#c8c8d4)">
+            <svg width="55" height="55" viewBox="0 0 55 55" fill="none" stroke="#888" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="5" width="39" height="38" rx="5"/>
+              <rect x="12" y="9" width="31" height="28" rx="2" fill="#ccc" stroke="none"/>
+              <rect x="14" y="44" width="27" height="5" rx="2"/>
+              <rect x="20" y="44" width="15" height="2" rx="1" fill="#aaa" stroke="none"/>
+            </svg>
+          </div>
+          <div class="review-card-body">
+            <div class="stars">★★★★★</div>
+            <div class="review-score">
+              <span class="score-num">9.5</span>
+              <span class="score-denom">/10</span>
+              <span class="score-label">Excellent</span>
+            </div>
+            <h4><a href="#">MacBook Air 15" M3</a></h4>
+            <p>The best all-around laptop money can buy. Period.</p>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="card-img" style="background:linear-gradient(135deg,#e8e8f0,#c8c8d4)">
+            <svg width="40" height="55" viewBox="0 0 40 55" fill="none" stroke="#888" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="4" width="30" height="48" rx="7"/>
+              <rect x="9" y="10" width="22" height="34" rx="2"/>
+              <circle cx="20" cy="48" r="3"/>
+              <rect x="16" y="6" width="8" height="2" rx="1"/>
+            </svg>
+          </div>
+          <div class="review-card-body">
+            <div class="stars">★★★★★</div>
+            <div class="review-score">
+              <span class="score-num">9.2</span>
+              <span class="score-denom">/10</span>
+              <span class="score-label">Excellent</span>
+            </div>
+            <h4><a href="#">iPhone 16 Pro Max</a></h4>
+            <p>Camera system evolution, not revolution — but what a system.</p>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="card-img" style="background:linear-gradient(135deg,#e8e8f0,#c8c8d4)">
+            <svg width="55" height="55" viewBox="0 0 55 55" fill="none" stroke="#888" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="12" width="45" height="32" rx="4"/>
+              <rect x="9" y="16" width="37" height="23" rx="2"/>
+              <rect x="13" y="46" width="29" height="4" rx="2"/>
+              <rect x="19" y="46" width="17" height="2" rx="1" fill="#aaa" stroke="none"/>
+            </svg>
+          </div>
+          <div class="review-card-body">
+            <div class="stars">★★★★½</div>
+            <div class="review-score">
+              <span class="score-num">8.8</span>
+              <span class="score-denom">/10</span>
+              <span class="score-label">Great</span>
+            </div>
+            <h4><a href="#">iPad Air M2 13"</a></h4>
+            <p>A serious productivity machine at a price that makes sense.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-col -->
+
+    <!-- ── SIDEBAR ─────────────────────────────────── -->
+    <aside class="sidebar">
+
+      <div class="sidebar-widget">
+        <div class="widget-head">Browse Topics</div>
+        <div class="widget-body">
+          <div class="topic-chips">
+            <a href="#" class="topic-chip">iPhone</a>
+            <a href="#" class="topic-chip">Mac</a>
+            <a href="#" class="topic-chip">iPad</a>
+            <a href="#" class="topic-chip">Apple Watch</a>
+            <a href="#" class="topic-chip">AirPods</a>
+            <a href="#" class="topic-chip">Apple TV+</a>
+            <a href="#" class="topic-chip">iOS 19</a>
+            <a href="#" class="topic-chip">macOS 16</a>
+            <a href="#" class="topic-chip">Vision Pro</a>
+            <a href="#" class="topic-chip">App Store</a>
+            <a href="#" class="topic-chip">Apple Silicon</a>
+            <a href="#" class="topic-chip">HomePod</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="rumors" class="sidebar-widget">
+        <div class="widget-head">Rumor Tracker</div>
+        <div class="widget-body" style="padding-top:8px">
+
+          <div class="rumor-item">
+            <div class="rumor-bar">
+              <h5>iPhone 17 Air</h5>
+              <span class="rumor-conf conf-high">High</span>
+            </div>
+            <p class="rumor-src">Sources: Bloomberg, MacRumors</p>
+            <div class="rumor-track"><div class="rumor-fill" style="width:90%"></div></div>
+          </div>
+
+          <div class="rumor-item">
+            <div class="rumor-bar">
+              <h5>Apple Watch Blood Glucose</h5>
+              <span class="rumor-conf conf-med">Medium</span>
+            </div>
+            <p class="rumor-src">Sources: Mark Gurman</p>
+            <div class="rumor-track"><div class="rumor-fill" style="width:60%;background:linear-gradient(90deg,#C85000,#f5a623)"></div></div>
+          </div>
+
+          <div class="rumor-item">
+            <div class="rumor-bar">
+              <h5>Apple Car revival</h5>
+              <span class="rumor-conf conf-low">Low</span>
+            </div>
+            <p class="rumor-src">Sources: The Information</p>
+            <div class="rumor-track"><div class="rumor-fill" style="width:25%;background:#999"></div></div>
+          </div>
+
+          <div class="rumor-item">
+            <div class="rumor-bar">
+              <h5>Vision Pro 2 (2027)</h5>
+              <span class="rumor-conf conf-high">High</span>
+            </div>
+            <p class="rumor-src">Sources: Ming-Chi Kuo</p>
+            <div class="rumor-track"><div class="rumor-fill" style="width:80%"></div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <div class="widget-head">Most Read This Week</div>
+        <div class="widget-body" style="padding-top:8px">
+
+          <div class="sidebar-news-item">
+            <div class="sn-num">1</div>
+            <div>
+              <h5><a href="#">Everything Apple announced at WWDC 2026</a></h5>
+              <span>47,382 views</span>
+            </div>
+          </div>
+          <div class="sidebar-news-item">
+            <div class="sn-num">2</div>
+            <div>
+              <h5><a href="#">MacBook Pro M4 Max review</a></h5>
+              <span>31,109 views</span>
+            </div>
+          </div>
+          <div class="sidebar-news-item">
+            <div class="sn-num">3</div>
+            <div>
+              <h5><a href="#">iOS 19: every new feature in the beta</a></h5>
+              <span>24,877 views</span>
+            </div>
+          </div>
+          <div class="sidebar-news-item">
+            <div class="sn-num">4</div>
+            <div>
+              <h5><a href="#">iPhone 17 Air: price, specs, and release date</a></h5>
+              <span>19,440 views</span>
+            </div>
+          </div>
+          <div class="sidebar-news-item">
+            <div class="sn-num">5</div>
+            <div>
+              <h5><a href="#">AirPods 4 vs AirPods Pro 3: which should you buy?</a></h5>
+              <span>14,552 views</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Newsletter signup -->
+      <div class="sidebar-widget" style="background:linear-gradient(135deg,#0055b3,#0077ed);border-color:#0077ed">
+        <div class="widget-head" style="background:rgba(0,0,0,0.2);color:white;border-color:rgba(255,255,255,0.1)">Newsletter</div>
+        <div class="widget-body">
+          <p style="font-size:13px;color:rgba(255,255,255,0.85);margin-bottom:10px;line-height:1.5">Get the best Apple news delivered to your inbox every morning.</p>
+          <input type="email" placeholder="your@email.com" style="width:100%;padding:7px 10px;border-radius:6px;border:none;font-size:13px;margin-bottom:8px;outline:none;">
+          <button style="width:100%;background:white;color:#0055b3;font-size:13px;font-weight:700;padding:8px;border:none;border-radius:6px;cursor:pointer;letter-spacing:0.3px;">Subscribe Free →</button>
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- /two-col -->
+</div><!-- /container -->
+
+<!-- ── FOOTER ──────────────────────────────────────────── -->
+<footer>
+  <div class="footer-rainbow"></div>
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div>
+        <div class="footer-brand">
+          <!-- small Apple logo -->
+          <svg width="16" height="20" viewBox="0 0 814 1000" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#1D1D1F" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.3-155.5-127.2C46.7 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 70.6 0 127.5 46.4 171.1 46.4 42.8 0 109.4-49 192.5-49 31.2 0 113.4 2.6 168.5 98.3zM554 107.3c23.4-27.6 40.2-66.1 40.2-104.6 0-5.2-.6-10.5-1.3-15.7-38.1 1.4-82.9 25.4-109.9 57-21.3 24.7-41.6 63.2-41.6 102.3 0 5.8.9 11.6 1.3 13.5 2.3.4 6.1.9 9.9.9 34.4 0 75.8-22.7 101.4-53.4z"/>
+          </svg>
+          <span>iBigNickTech</span>
+        </div>
+        <p class="footer-tagline">Independent Apple news, rumors, reviews, and how-tos. Not affiliated with Apple Inc.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Coverage</h5>
+        <ul>
+          <li><a href="#">iPhone</a></li>
+          <li><a href="#">Mac</a></li>
+          <li><a href="#">iPad</a></li>
+          <li><a href="#">Apple Watch</a></li>
+          <li><a href="#">AirPods</a></li>
+          <li><a href="#">Vision Pro</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Content</h5>
+        <ul>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Reviews</a></li>
+          <li><a href="#">Rumors</a></li>
+          <li><a href="#">How-To</a></li>
+          <li><a href="#">Opinion</a></li>
+          <li><a href="#">Deals</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Software</h5>
+        <ul>
+          <li><a href="#">iOS 19</a></li>
+          <li><a href="#">macOS 16</a></li>
+          <li><a href="#">watchOS 12</a></li>
+          <li><a href="#">visionOS 3</a></li>
+          <li><a href="#">tvOS 19</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>About</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Advertise</a></li>
+          <li><a href="#">RSS Feed</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Twitter / X</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 iBigNickTech. Not affiliated with Apple Inc. All Apple product names are trademarks of Apple Inc.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Accessibility</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

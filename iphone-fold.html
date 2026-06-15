@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iPhone Fold: Everything We Know – iBigNickTech</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Mona+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --apple-red:    #FF2600;
+    --apple-orange: #FF9300;
+    --apple-yellow: #FFCD00;
+    --apple-green:  #65B100;
+    --apple-blue:   #0066CC;
+    --apple-purple: #800080;
+
+    --white:   #FFFFFF;
+    --offwhite:#F5F5F7;
+    --silver:  #E8E8ED;
+    --mid:     #AEAEB2;
+    --dark:    #1D1D1F;
+    --body:    #3A3A3C;
+    --link:    #0066CC;
+
+    --nav-h: 44px;
+    --radius: 10px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--body);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { display: block; max-width: 100%; }
+
+  /* ── APPLE LOGO SVG ───────────────────────────────── */
+  .apple-logo {
+    width: 26px; height: 32px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ── GLASSY NAV ───────────────────────────────────── */
+  #site-header {
+    position: sticky; top: 0; z-index: 999;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(235,235,235,0.94) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .nav-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: var(--nav-h);
+    padding: 0 16px;
+    gap: 0;
+  }
+
+  .nav-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 15px;
+    color: var(--dark);
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+  .nav-brand span { font-weight: 300; font-size: 11px; color: var(--mid); display: block; letter-spacing: 0.3px; line-height: 1; }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 0;
+    list-style: none;
+    margin-left: 28px;
+    flex: 1;
+  }
+  .nav-links li a {
+    display: block;
+    padding: 0 12px;
+    height: var(--nav-h);
+    line-height: var(--nav-h);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--dark);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    letter-spacing: 0.2px;
+  }
+  .nav-links li a:hover,
+  .nav-links li a.active { color: var(--link); border-bottom-color: var(--link); }
+
+  /* ── ARTICLE ─────────────────────────────────────── */
+  .article-container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 16px 60px;
+  }
+
+  .article-header {
+    margin-bottom: 32px;
+  }
+
+  .article-category {
+    display: inline-block;
+    background: var(--apple-red);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  .article-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--dark);
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .article-meta {
+    font-size: 13px;
+    color: var(--mid);
+    margin-bottom: 24px;
+  }
+
+  .article-meta strong {
+    color: var(--dark);
+    font-weight: 600;
+  }
+
+  .article-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #e8e8f0 0%, #d0d0da 100%);
+    border-radius: var(--radius);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .article-image svg {
+    opacity: 0.2;
+    width: 120px;
+    height: 120px;
+  }
+
+  .article-content {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--body);
+  }
+
+  .article-content p {
+    margin-bottom: 20px;
+  }
+
+  .article-content h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-top: 40px;
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .article-content h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-top: 28px;
+    margin-bottom: 12px;
+  }
+
+  .article-content ul {
+    margin: 20px 0;
+    padding-left: 24px;
+  }
+
+  .article-content li {
+    margin-bottom: 8px;
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--apple-blue);
+    padding-left: 20px;
+    margin: 24px 0;
+    font-style: italic;
+    color: #555;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--link);
+    margin-bottom: 24px;
+  }
+
+  .back-link:hover {
+    text-decoration: none;
+  }
+
+  /* ── FOOTER ───────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--silver);
+    background: linear-gradient(180deg, var(--offwhite) 0%, var(--silver) 100%);
+  }
+  .footer-rainbow {
+    height: 3px;
+    background: linear-gradient(90deg, var(--apple-red), var(--apple-orange), var(--apple-yellow), var(--apple-green), var(--apple-blue), var(--apple-purple));
+  }
+  .footer-inner {
+    max-width: 980px; margin: 0 auto; padding: 32px 16px 20px;
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--silver); padding-top: 16px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-bottom p { font-size: 11px; color: var(--mid); }
+
+</style>
+</head>
+<body>
+
+<!-- ── HEADER / NAV ─────────────────────────────────── -->
+<header id="site-header">
+  <nav class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <svg class="apple-logo" viewBox="0 0 814 1000" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#1D1D1F" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.3-155.5-127.2C46.7 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 70.6 0 127.5 46.4 171.1 46.4 42.8 0 109.4-49 192.5-49 31.2 0 113.4 2.6 168.5 98.3zM554 107.3c23.4-27.6 40.2-66.1 40.2-104.6 0-5.2-.6-10.5-1.3-15.7-38.1 1.4-82.9 25.4-109.9 57-21.3 24.7-41.6 63.2-41.6 102.3 0 5.8.9 11.6 1.3 13.5 2.3.4 6.1.9 9.9.9 34.4 0 75.8-22.7 101.4-53.4z"/>
+      </svg>
+      <div>
+        iBigNickTech
+        <span>Apple News, Rumors &amp; Reviews</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="tips.html">Tips</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ── ARTICLE ───────────────────────────────────────── -->
+<div class="article-container">
+  <a href="iphone.html" class="back-link">← Back to iPhone Coverage</a>
+  
+  <div class="article-header">
+    <span class="article-category">Exclusive Rumor</span>
+    <h1 class="article-title">iPhone Fold: Apple's Foldable iPhone Coming This September</h1>
+    <p class="article-meta">By <strong>Nicholas Seaback</strong> from iBigNickTech · June 14, 2026 · 8 min read</p>
+  </div>
+
+  <div class="article-image">
+    <img src="https://pbs.twimg.com/media/F0uhik5DWRO?format=jpg&name=large" alt="iOS 27 beta code showing foldable iPhone references" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+  <p style="font-size:12px;color:var(--mid);margin:-20px 0 32px;text-align:center;">Image credit: <a href="https://9to5mac.com/2026/06/08/apple-leaks-foldable-iphone-references-in-ios-27-beta/" target="_blank" style="color:var(--link);">9to5Mac</a></p>
+
+  <div class="article-content">
+    <p>Apple is finally ready to enter the foldable smartphone market. Multiple sources within Apple's supply chain have confirmed that the company plans to announce its first foldable iPhone, tentatively called the "iPhone Fold," at its September event this year.</p>
+
+    <h2>What We Know So Far</h2>
+
+    <p>After years of speculation and countless rumors, Apple appears to have solved the technical challenges that have kept it from launching a foldable device. Here's what our sources are telling us:</p>
+
+    <ul>
+      <li><strong>Display Technology:</strong> Apple has developed a proprietary folding display technology that's reportedly more durable than Samsung's Galaxy Z Fold series. The hinge mechanism uses a new "liquid metal" alloy that Apple has been developing for over five years.</li>
+      <li><strong>Screen Size:</strong> When unfolded, the device will feature a 7.9-inch display, making it larger than the iPhone 16 Pro Max but smaller than the Galaxy Z Fold 5. When folded, it will be roughly the size of a regular iPhone.</li>
+      <li><strong>Thickness:</strong> One of Apple's primary concerns has been device thickness. The iPhone Fold is said to be just 6.2mm when unfolded and 12.4mm when folded – significantly thinner than competing foldables.</li>
+      <li><strong>Pricing:</strong> Expect this to be Apple's most expensive iPhone ever, with a starting price rumored to be around $1,999.</li>
+    </ul>
+
+    <h2>The September Announcement</h2>
+
+    <p>Apple's traditional September event is typically reserved for new iPhone models, and this year will be no different. However, the iPhone Fold will be the star of the show. Our sources indicate that Apple plans to position it as a "pro" device above the iPhone 17 Pro lineup.</p>
+
+    <p>The event is expected to take place on September 9th, 2026, with pre-orders starting immediately after the announcement and retail availability by late September.</p>
+
+    <h2>Technical Specifications (Rumored)</h2>
+
+    <p>While Apple hasn't released official specifications, here's what we're hearing from reliable sources:</p>
+
+    <ul>
+      <li><strong>Processor:</strong> A19 Pro chip with enhanced neural engine for foldable-specific features</li>
+      <li><strong>RAM:</strong> 12GB (up from 8GB in current Pro models)</li>
+      <li><strong>Storage:</strong> Starting at 256GB, going up to 1TB</li>
+      <li><strong>Cameras:</strong> Triple-lens system similar to iPhone 17 Pro, but with new foldable-optimized photography modes</li>
+      <li><strong>Battery:</strong> 4,400mAh battery with support for faster charging (45W)</li>
+    </ul>
+
+    <h2>Software Features</h2>
+
+    <p>The iPhone Fold will launch with iOS 20, which will include several foldable-specific features:</p>
+
+    <ul>
+      <li><strong>App Continuity:</strong> Seamless app transitions between folded and unfolded states</li>
+      <li><strong>Split Screen:</strong> Enhanced multitasking with true split-screen support</li>
+      <li><strong>Fold Widgets:</strong> New widgets that take advantage of the folding display</li>
+      <li><strong>Apple Intelligence:</strong> AI-powered features that adapt to how you're using the device (folded vs unfolded)</li>
+    </ul>
+
+    <h2>Should You Wait?</h2>
+
+    <p>If you're in the market for a new iPhone this fall, you might want to hold off until September. The iPhone Fold represents a significant departure from Apple's traditional iPhone design, and early adopters will be getting something truly revolutionary.</p>
+
+    <p>However, first-generation foldable devices often have issues. If you're risk-averse, the iPhone 17 Pro and Pro Max will still be excellent choices with more predictable performance and reliability.</p>
+
+    <blockquote>"Apple doesn't enter new product categories until they can do it right. The fact that they're finally launching a foldable suggests they've solved the durability and usability issues that have plagued other manufacturers." – Industry Analyst</blockquote>
+
+    <h2>What's Next</h2>
+
+    <p>We'll be covering the September event live, so stay tuned to BigNickTech for all the official details as they're announced. In the meantime, we'll continue to bring you the latest rumors and leaks as we get closer to the launch date.</p>
+
+    <p>Are you excited for a foldable iPhone? Let us know your thoughts in the comments or on social media!</p>
+  </div>
+</div>
+
+<!-- ── FOOTER ──────────────────────────────────────────── -->
+<footer>
+  <div class="footer-rainbow"></div>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2026 iBigNickTech. Not affiliated with Apple Inc.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
