@@ -141,6 +141,19 @@
     transform: rotate(-45deg) translate(7px, -7px);
   }
 
+  .nav-twitter {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    margin-left: 12px;
+    color: var(--dark);
+    border-radius: 50%;
+    transition: all .2s;
+  }
+  .nav-twitter:hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--link);
+  }
+
   /* ── MOBILE RESPONSIVE ───────────────────────────── */
   @media (max-width: 768px) {
     .nav-toggle {
@@ -387,6 +400,12 @@
       <span></span>
       <span></span>
     </button>
+
+    <a href="https://x.com/iBigNickTech" target="_blank" class="nav-twitter" aria-label="Twitter">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </a>
   </nav>
 </header>
 
@@ -470,6 +489,9 @@
   <div class="footer-inner">
     <div class="footer-bottom">
       <p>© 2026 iBigNickTech. Not affiliated with Apple Inc.</p>
+      <div class="footer-bottom-links">
+        <a href="https://x.com/iBigNickTech" target="_blank">Twitter / X</a>
+      </div>
     </div>
   </div>
 </footer>

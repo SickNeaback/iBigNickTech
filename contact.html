@@ -235,6 +235,19 @@
   }
   .nav-search input:focus { border-color: var(--link); width: 200px; background-color: white; }
 
+  .nav-twitter {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    margin-left: 12px;
+    color: var(--dark);
+    border-radius: 50%;
+    transition: all .2s;
+  }
+  .nav-twitter:hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--link);
+  }
+
   /* ── HERO ─────────────────────────────────────────── */
   .hero {
     background: linear-gradient(180deg, #f0f0f5 0%, #ffffff 100%);
@@ -422,6 +435,12 @@
       <span></span>
     </button>
 
+    <a href="https://x.com/iBigNickTech" target="_blank" class="nav-twitter" aria-label="Twitter">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </a>
+
     <div class="nav-search">
       <input type="search" placeholder="Search…" aria-label="Search">
     </div>
@@ -453,7 +472,7 @@
       <div class="contact-card">
         <h3>Social Media</h3>
         <p>Follow along for daily updates and behind-the-scenes:</p>
-        <a href="#">@BigNickTech</a>
+        <a href="https://x.com/iBigNickTech" target="_blank">@iBigNickTech on X (Twitter)</a>
       </div>
     </div>
   </div>
