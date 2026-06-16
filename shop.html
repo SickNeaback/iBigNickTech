@@ -80,6 +80,10 @@
     white-space: nowrap;
     flex-shrink: 0;
     text-decoration: none;
+    transition: color .15s;
+  }
+  .nav-brand:hover {
+    color: var(--link);
   }
   .nav-brand span { font-weight: 300; font-size: 12px; color: var(--mid); display: block; letter-spacing: 0.3px; line-height: 1; }
 
@@ -101,6 +105,8 @@
     border-bottom: 2px solid transparent;
     transition: color .15s, border-color .15s;
     letter-spacing: 0.2px;
+    box-sizing: border-box;
+    min-width: fit-content;
   }
   .nav-links li a:hover,
   .nav-links li a.active { color: var(--link); border-bottom-color: var(--link); }
